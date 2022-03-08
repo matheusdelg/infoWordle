@@ -7,6 +7,10 @@ class Word:
         self.word = word
         self.probability = {}
         self.match = {}
+
+        wl = WordList()
+        self.total = len(wl.wordlist)
+
         self.compareWords()
 
     def compareWith(self, word):
@@ -16,19 +20,15 @@ class Word:
 
         self.match[word] = result
         if result in self.probability.keys():
-            self.probability[result] += 1.
+            self.probability[result] += 1 / self.total
         else:
-            self.probability[result] = 1.
+            self.probability[result] = 1 / self.total
 
     def compareWords(self):
         wl = WordList()
-        total = len(wl.wordlist)
-
+        
         for guess in wl.wordlist:
             self.compareWith(guess)
-
-        for result in self.probability.keys():
-            self.probability[result] /= total
 
 class Player:
     def __init__(self):
@@ -37,11 +37,9 @@ class Player:
     def train(self, guess):
         w = Word(guess)
         probs = w.probability
-        infos = {key: -log2(value) for (key, value) in probs.items()}
 
-        entropies = [probs[key]*infos[key] for key in probs.keys()]
+        entropies = [-probs[key]*log2(probs[key]) for key in probs.keys()]
         self.entropy[guess] = sum(entropies)
-        return self.entropy
 
     def bestFit(self):
         return max(self.entropy, key=self.entropy.get)
