@@ -3,7 +3,7 @@ import re
 
 class Game:
 
-    def __init__(self, maxRounds=6):
+    def __init__(self, path="dataset/words.csv", maxRounds=6):
         self.wl = WordList()
         self.maxRounds = maxRounds
         self.newTurn()
@@ -32,7 +32,6 @@ class Game:
         return result
 
     def input(self):
-
         valid  = False
         iregex = re.compile("^[A-Z,a-z]{5}$")
 
