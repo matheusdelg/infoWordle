@@ -4,7 +4,7 @@ import re
 class Game:
 
     def __init__(self, path="dataset/words.csv", maxRounds=6):
-        self.wl = WordList()
+        self.wl = WordList(path)
         self.maxRounds = maxRounds
         self.newTurn()
 
@@ -29,7 +29,7 @@ class Game:
                 result[i] = "G"
 
         self.guesses.append(result)
-        return result
+        return "".join(result)
 
     def input(self):
         valid  = False
